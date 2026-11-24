@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no">
+  <title>なっちゃんのとなりで</title>
+  <!-- アイコン未用意のため、favicon.ico の 404 を防ぐ仮指定 -->
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <!-- ゲーム全体。画面を追加するときは data-screen 付きの section を増やす -->
+  <main id="app" class="app">
+
+    <!-- タイトル画面 -->
+    <section class="screen screen--title" data-screen="title" aria-label="タイトル画面" tabindex="-1">
+      <h1 class="title-logo"><span>なっちゃんの</span><span>となりで</span></h1>
+      <div class="placeholder">タイトル画像（仮）</div>
+      <button class="button" type="button" data-go-to="game">はじめる</button>
+    </section>
+
+    <!-- ゲーム画面 -->
+    <section class="screen screen--game" data-screen="game" aria-label="ゲーム画面" tabindex="-1" hidden>
+      <header class="game-header">
+        <button class="button button--small" type="button" data-go-to="title">タイトルへ</button>
+        <div class="placeholder placeholder--audio">音声（仮）</div>
+      </header>
+      <!-- ゲーム本体はこの中に追加する -->
+      <div id="game-content" class="game-content">
+        <div class="placeholder">ゲーム画像（仮）</div>
+      </div>
+    </section>
+
+    <!-- 画面切り替え用のフェード幕 -->
+    <div id="fade" class="fade" aria-hidden="true"></div>
+  </main>
+
+  <!-- スマートフォンを横向きにしたときだけ表示 -->
+  <p class="rotate-notice">スマートフォンを縦向きにしてください</p>
+</body>
+</html>

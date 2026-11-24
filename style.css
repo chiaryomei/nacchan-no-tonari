@@ -1,0 +1,227 @@
+/* ========================================
+   共通設定
+   ======================================== */
+:root {
+  /* 色はすべて仮 */
+  --color-outside: #e8dfd5;
+  --color-background: #fffaf3;
+  --color-text: #4a3f38;
+  --color-button: #8a5a44;
+  --color-button-text: #ffffff;
+  --color-placeholder: #f1e7db;
+  --color-placeholder-line: #b8a594;
+  --color-fade: #000000;
+
+  --app-max-width: 480px;
+  --space: 16px;
+  --tap-size: 44px;
+
+  /* 実際の値は script.js の FADE_DURATION_MS で上書きする */
+  --fade-duration: 300ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* display を指定した要素でも hidden 属性を優先する */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--color-outside);
+  color: var(--color-text);
+  font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP",
+    "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ========================================
+   ゲーム全体
+   ======================================== */
+.app {
+  position: relative;
+  width: 100%;
+  max-width: var(--app-max-width);
+  height: 100vh; /* dvh 非対応ブラウザ用 */
+  height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--color-background);
+  touch-action: manipulation;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  padding:
+    max(var(--space), env(safe-area-inset-top))
+    max(var(--space), env(safe-area-inset-right))
+    max(var(--space), env(safe-area-inset-bottom))
+    max(var(--space), env(safe-area-inset-left));
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 画面切り替え時のフォーカス移動先。枠線は不要 */
+.screen:focus {
+  outline: none;
+}
+
+/* ========================================
+   共通部品
+   ======================================== */
+.button {
+  flex-shrink: 0;
+  min-width: 200px;
+  min-height: 56px;
+  padding: 8px 24px;
+  border: 0;
+  border-radius: 28px;
+  background: var(--color-button);
+  color: var(--color-button-text);
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.button:active {
+  opacity: 0.8;
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+.button--small {
+  min-width: 0;
+  min-height: var(--tap-size);
+  padding: 4px 16px;
+  border-radius: 22px;
+  font-size: 0.875rem;
+}
+
+/* 素材の仮表示。素材が用意できたら置き換える */
+.placeholder {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 160px;
+  border: 2px dashed var(--color-placeholder-line);
+  border-radius: 12px;
+  background: var(--color-placeholder);
+  font-size: 0.875rem;
+}
+
+.placeholder--audio {
+  flex: none;
+  width: auto;
+  min-height: var(--tap-size);
+  padding: 4px 12px;
+}
+
+/* ========================================
+   タイトル画面
+   ======================================== */
+.screen--title {
+  align-items: center;
+}
+
+.title-logo {
+  flex-shrink: 0;
+  margin: var(--space) 0 0;
+  font-size: clamp(1.75rem, 9vw, 2.5rem);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.title-logo span {
+  display: block;
+}
+
+/* ========================================
+   ゲーム画面
+   ======================================== */
+.game-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space);
+}
+
+.game-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+/* ========================================
+   フェード演出
+   ======================================== */
+.fade {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-fade);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fade-duration) ease;
+}
+
+/* 切り替え中は幕でタップも受け止める */
+.fade.is-blocking {
+  pointer-events: auto;
+}
+
+.fade.is-covered {
+  opacity: 1;
+}
+
+/* ========================================
+   横向き時の案内
+   ======================================== */
+.rotate-notice {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  padding: var(--space);
+  text-align: center;
+}
+
+/* スマートフォンの横向きのみ対象（PC の横長画面は除く） */
+@media (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  .app {
+    display: none;
+  }
+
+  .rotate-notice {
+    display: flex;
+  }
+}
